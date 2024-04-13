@@ -8,7 +8,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var client *mongo.Client
+var (
+	Client    *mongo.Client
+	Exercises *mongo.Collection
+)
 
 func Init(db string) error {
 	opts := options.Client().ApplyURI("mongodb://localhost:27017")
@@ -17,13 +20,15 @@ func Init(db string) error {
 	if err != nil {
 		return err
 	}
-	client = localClient
+	Client = localClient
 
-	err = client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err()
+	Exercises = Client.Database(db).Collection("exercises")
+
+	err = Client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err()
 	return err
 
 }
 
 func Close() error {
-	return client.Disconnect(context.Background())
+	return Client.Disconnect(context.Background())
 }

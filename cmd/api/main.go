@@ -2,14 +2,17 @@ package main
 
 import (
 	"api/internal/database"
+	"api/internal/handler"
 	"fmt"
-	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	if err := database.Init("exercises"); err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Println("Database connected...")
 
 	defer func() {
@@ -18,13 +21,11 @@ func main() {
 		}
 	}()
 
-	mux := http.NewServeMux()
+	r := gin.Default()
 
-	mux.HandleFunc("GET /exercises", func(w http.ResponseWriter, r *http.Request) {
+	r.GET("/exercises/:date", handler.Get_Exercises_By_Date)
+	r.POST("/exercises", handler.Add_Exercise)
+	r.DELETE("/exercises/:id", handler.Delete_Exercise)
 
-	})
-
-	mux.HandleFunc("POST /exercises", func(w http.ResponseWriter, r *http.Request) {
-
-	})
+	r.Run(":8080")
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := database.Init("exercises"); err != nil {
+	if err := database.Init("exercise"); err != nil {
 		fmt.Println(err)
 	}
 

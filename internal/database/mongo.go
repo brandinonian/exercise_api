@@ -14,7 +14,7 @@ var (
 )
 
 func Init(db string) error {
-	opts := options.Client().ApplyURI("mongodb://localhost:27017")
+	opts := options.Client().ApplyURI("mongodb://localhost:27017") // local db
 
 	localClient, err := mongo.Connect(context.Background(), opts)
 	if err != nil {
